@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Registration Form, Partum Solutions, Partum, Software house, Software Company, Websites, Web Applications, Management System, Databases and etc">
+    <meta name="author" content="Zaheer Jan">
+    <meta name="keyword" content="Register Form, Partum Solutions, Partum, Software Solutions, Software House, Databases, Web Applications, Websites">
+
+    <title>Зарегистрироваться | Партум Решения | Поставщики программных решений для бизнеса</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <!--external css-->
+    <link href="{% static 'font-awesome/css/font-awesome.css' %}" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style-responsive.css' %}" rel="stylesheet">
+    <style>
+        .errorlist{
+            display: inline-block;
+            color: red;
+            font-size: smaller;
+            float: right;
+        }
+        .error-alert{
+            text-align: center;
+            padding-bottom: 10px;
+            font-size: xx-large;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+<div id="login-page">
+    <div class="container">
+
+        <form class="form-login" method="post" action="{% url 'register' %}">
+            <h2 class="form-login-heading">Форма регистрации</h2>
+            <div class="login-wrap">
+                {% if form.errors or form.non_field_errors %}
+                    <div class="error-alert">
+                        <i class="fa fa-warning pull-center"></i>
+                    </div>
+                {% endif %}
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div>
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                <h5>Зарегистрируйтесь, чтобы использовать Ledger Free!</h5>
+                
+                <!-- Поле ввода имени пользователя -->
+                <input type="text" class="form-control" placeholder="Имя пользователя" name="username" value="{{ username }}" autofocus>
+                {% if form.errors %}
+                    {{ form.errors.username }}
+                {% endif %}
+                <br>
+                
+                <!-- Поле ввода email -->
+                <input type="email" class="form-control" placeholder="Email" name="email" value="{{ email }}">
+                {% if form.errors %}
+                    {{ form.errors.email }}
+                {% endif %}
+                <br>
+                
+                <!-- Поле ввода пароля -->
+                <input type="password" class="form-control" name="password1" placeholder="Пароль" value="{{ password1 }}">
+                {% if form.errors %}
+                    {{ form.errors.password1  }}
+                {% endif %}
+                <br>
+                
+                <!-- Поле подтверждения пароля -->
+                <input type="password" class="form-control" name="password2" placeholder="Подтвердить Пароль" value="{{ password2 }}">
+                {% if form.errors %}
+                    {{ form.errors.password2  }}
+                {% endif %}
+                <br>
+                
+                <!-- Кнопка отправки формы -->
+                <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-lock"></i> Регистр</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+</body>
+</html>

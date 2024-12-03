@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block submenu_create_supplier %}активный{% endblock %}
+{% block menu_supplier %}активный{% endblock %}
+{% block content %}
+<div class="col-md-6">
+    <br>
+    <a href="#"><button type="button" id="empolyee" class="btn btn-primary" id="load" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Processing">Список поставщиков</button></a>
+    <br><br><br>
+    <div class="content-panel">
+        <h3 class="text-center"> Добавить поставщика</h3>
+        <div class="panel-body">
+            <form class="form-horizontal add-ledger-form" action="{% url 'supplier:add_supplier' %}" method="post" autocomplete="off">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        {% csrf_token %}
+                        <label><strong>Имя</strong></label>
+                        <span class="name-error" style="color: red; display: none" >Это поле обязательно к заполнению</span>
+                        <input type="text" class="form-control name" name="name" placeholder="Имя"><br>
+                        <label><strong>Адрес</strong></label>
+                        <span class="father_name-error" style="color: red; display: none" >Это поле обязательно к заполнению</span>
+                        <input type="text" class="form-control father_name" name="address" placeholder="Адрес"><br>
+                        <label><strong>Телефонный номер</strong></label>
+                        <span class="mobile-error" style="color: red; display: none" >Это поле обязательно к заполнению</span>
+                        <input type="text" class="form-control mobile" name="phone" placeholder="Телефон"><br>
+                        <label><strong>Номер мобильного</strong></label>
+                        <input type="text" class="form-control mobile" name="mobile_no" placeholder="Мобильный"><br>
+
+                        <button type="submit" id="save" class="btn btn-primary ledger-submit-btn" style="float: right" id="load" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Processing Order">Сохранить поставщика</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

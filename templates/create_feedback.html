@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block menu_feedback %}активный{% endblock %}
+{#{% block menu_feedback %}активный{% endblock %}#}
+{% block content %}
+<div class="col-md-6">
+    <br><br>
+    <div class="content-panel">
+        <h3 class="text-center">Обратная связь</h3>
+        <div class="panel-body">
+            <form class="form-horizontal add-ledger-form" action="{% url 'create_feedback' %}" method="post" autocomplete="off">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        {% csrf_token %}
+                        <span class="description-error" style="color: red; display: none" >Это поле обязательно к заполнению</span>
+                        <label><strong>Обратная связь</strong></label>
+                        <textarea class="form-control description" name="description" placeholder="Обратная связь" rows="10"></textarea><br>
+                        <input type="hidden" name="retailer" value="{{ request.user.retailer_user.retailer.id }}">
+                        <button type="button"  id="save" class="btn btn-primary ledger-submit-btn" style="float: right" id="load" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>Processing Order">Сделанный</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+        $('document').ready(function () {
+
+            $('.ledger-submit-btn').on ('click', function () {
+                var error = false;
+
+                if ($('.description').val() ==""){
+                    $('.description-error').show();
+                    error= true;
+                }
+                else {
+                    $('.description-error').hide();
+                    Swal.fire({
+                        type: 'success',
+                        title: 'Thank You',
+                        text: 'Your feedback is very important for us',
+                        showConfirmButton: true,
+                    }).then((result) => {
+                        $('.add-ledger-form').submit();
+                })
+                }
+                if (error == false) {
+
+                }
+            });
+
+            $('.description').keyup(function () {
+                $('.description-error').hide();
+            });
+
+        });
+
+    </script>
+
+
+{% endblock %}
