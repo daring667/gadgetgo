@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 {% load static %}
 {% load template_tags %}
 <head>
@@ -62,7 +62,7 @@
 
     <link href="{% static 'css/profileImage.css' %}" rel="stylesheet" type="text/css"/>
     <link href="{% static 'css/sweetalert2.min.css' %}" rel="stylesheet" />
-    <script src="{% static 'js/jquery.min.1.7.js'%}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/highcharts.js' %}"></script>
 </head>
 
@@ -71,14 +71,14 @@
 <section id="container" >
 
     <header class="header black-bg">
-        <a href="{% url 'index' %}" class="home_icon" style="float:left"><i class="fa fa-home fa-4x" aria-hidden="true"></i></a>
+        <a href="{% url 'index' %}" class="home_icon"><i class="fa fa-home fa-4x" aria-hidden="true"></i></a>
         <a href="{% url 'index' %}" class="logo"><b>GadgetGo</b></a>
         <div class="right_div">
             <div class="nav notify-row" id="top_menu">
                 {% product_notifications retailer_id=request.user.retailer_user.retailer.id as p_n %}
                 <ul class="nav top-menu">
                     <li id="header_inbox_bar" class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle msg" href="index.html#">
+                        <a data-toggle="dropdown" class="dropdown-toggle msg" href="#">
                             <i class="fa fa-envelope-o"></i> <span class="badge badge-danger notification_count" style="background: #d9534f"></span>
                         </a>
                         <ul class="dropdown-menu extended inbox">
@@ -95,7 +95,6 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <span class="message">
                                         {% for p in p_n %}
                                             {% if p.product_available_items < 5 %}
                                                 <tr>
@@ -104,18 +103,15 @@
                                                 </tr>
                                             {% endif %}
                                         {% endfor %}
-                                        </span>
                                     </tbody>
                                 </table>
                             </li>
                         </ul>
                     </li>
-                    <!-- inbox dropdown end -->
                 </ul>
-                <!--  notification end -->
             </div>
             <div class="top-menu">
-                <a tabindex="logout" class="btn btn-primary" href="{% url 'logout' %}" style="margin-top: 12px;">Выйти</a>
+                <a class="btn btn-primary" href="{% url 'logout' %}" style="margin-top: 12px;">Выйти</a>
             </div>
         </div>
     </header>
@@ -127,7 +123,6 @@
 <!-- js placed at the end of the document so the pages load faster -->
 {% block scripts %}
 <script src="{% static 'js/jquery.js' %}"></script>
-<script src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script class="include" type="text/javascript" src="{% static 'js/jquery.dcjqaccordion.2.7.js' %}"></script>
 <script src="{% static 'js/jquery.scrollTo.min.js' %}"></script>
@@ -143,18 +138,26 @@
 <script src="{% static 'js/zabuto_calendar.js' %}"></script>
 
 <script type="application/javascript">
-        $(document).ready(function () {
-            var notification_count = 0;
-            {% for p in p_n %}
-                {% if p.product_available_items < 5 %}
-                        notification_count += 1;
-                {% endif %}
-            {% endfor %}
+         $(document).ready(function () {
+        var notification_count = 0;
+
+        // Передайте список p_n из Django в JSON
+        var products = JSON.parse('{{ p_n|safe|escapejs }}');
+
+        // Обработайте данные на стороне JavaScript
+        products.forEach(function (p) {
+            if (p.product_available_items < 5) {
+                notification_count += 1;
+            }
+        });
+
+        console.log("Количество уведомлений: " + notification_count);
+    });
 
             $('.notification_count').text(notification_count);
             $("#date-popover").popover({html: true, trigger: "manual"});
             $("#date-popover").hide();
-            $("#date-popover").click(function (e) {
+            $("#date-popover").click(function () {
                 $(this).hide();
             });
 
@@ -166,16 +169,14 @@
                     return myNavFunction(this.id);
                 },
                 ajax: {
-                    url: "show_data.php?action=1",
+                    url: "/path/to/your/ajax-handler/",
                     modal: true
                 },
                 legend: [
                     {type: "text", label: "Special event", badge: "00"},
-                    {type: "block", label: "Regular event", }
+                    {type: "block", label: "Regular event"}
                 ]
             });
-        });
-
 
         function myNavFunction(id) {
             $("#date-popover").hide();
